@@ -9,15 +9,15 @@ import lombok.EqualsAndHashCode;
 import lombok.Getter;
 import lombok.Setter;
 
-@Entity
-@Table
+@Entity(name = "CommonArea")
+@Table(name = "CommonArea")
 @Getter
 @Setter
 @EqualsAndHashCode(of = "id")
 public class CommonArea {
     @Id
     @GeneratedValue(strategy = GenerationType.UUID)
-    private String id;
+    private String idCommomArea;
     private String name;
     private String description;
 }
