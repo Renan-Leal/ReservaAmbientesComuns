@@ -1,29 +1,33 @@
 package com.senac.tcs.condominio.reserva.model.entities;
 
+import java.sql.Date;
+
 import jakarta.persistence.Entity;
-import jakarta.persistence.Table;
-import jakarta.persistence.Id;
 import jakarta.persistence.GeneratedValue;
 import jakarta.persistence.GenerationType;
+import jakarta.persistence.Id;
+import jakarta.persistence.Table;
 import lombok.Getter;
+import lombok.NoArgsConstructor;
 import lombok.Setter;
 
-@Entity(name = "CommonArea")
-@Table(name = "CommonArea")
+@NoArgsConstructor
 @Getter
 @Setter
+@Entity(name = "Condom")
+@Table(name = "Condom")
 
-public class CommonArea {
+public class Condom {
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Long id;
     private String name;
-    private String description;
+    private Date birth;
+    private String cpf;
     
-    public CommonArea(String name, String description) {
+    public Condom(String name, Date birth, String cpf) {
         this.name = name;
-        this.description = description;
+        this.birth = birth;
+        this.cpf = cpf;
     }
-
-    
 }
