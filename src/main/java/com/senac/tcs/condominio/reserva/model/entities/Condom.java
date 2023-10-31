@@ -1,7 +1,8 @@
 package com.senac.tcs.condominio.reserva.model.entities;
 
-import java.sql.Date;
+import java.time.LocalDate;
 
+import jakarta.persistence.Column;
 import jakarta.persistence.Entity;
 import jakarta.persistence.GeneratedValue;
 import jakarta.persistence.GenerationType;
@@ -21,11 +22,14 @@ public class Condom {
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Long id;
+    @Column(nullable = false, length = 250)
     private String name;
-    private Date birth;
+    @Column(nullable = false)
+    private LocalDate birth;
+    @Column(nullable = false, length = 11, unique = true)
     private String cpf;
     
-    public Condom(String name, Date birth, String cpf) {
+    public Condom(String name, LocalDate birth, String cpf) {
         this.name = name;
         this.birth = birth;
         this.cpf = cpf;

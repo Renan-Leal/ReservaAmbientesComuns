@@ -1,11 +1,10 @@
 package com.senac.tcs.condominio.reserva.model.dto;
 
-import java.sql.Date;
+import java.time.LocalDate;
 
 import com.senac.tcs.condominio.reserva.model.entities.CommonArea;
 import com.senac.tcs.condominio.reserva.model.entities.Condom;
 
-public record ReserveDTO(Date dtReserve, Condom condom, CommonArea commonArea) {
- 
+public record ReserveDTO(LocalDate dtReserve, Condom condom, CommonArea commonArea) {
     
 }
