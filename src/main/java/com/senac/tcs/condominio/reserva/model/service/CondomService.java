@@ -7,6 +7,7 @@ import org.springframework.stereotype.Service;
 
 import com.senac.tcs.condominio.reserva.model.entities.Condom;
 import com.senac.tcs.condominio.reserva.model.repository.CondomRepository;
+import com.senac.tcs.condominio.reserva.util.EntityException;
 
 @Service
 public class CondomService {  
@@ -16,5 +17,17 @@ public class CondomService {
 
     public List<Condom> listAll() {
         return repository.findAll();
+    }
+
+    public Condom register(Condom condom) {
+        return repository.save(condom);
+    }
+
+    public Condom findById(Long id) {
+        return repository.findById(id).orElseThrow(() -> new EntityException("Condom", id));
+    }
+
+    public void deleteById(Long id) {
+        repository.deleteById(id);
     }
 }
