@@ -6,8 +6,8 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
 import com.senac.tcs.condominio.reserva.model.entities.Condom;
+import com.senac.tcs.condominio.reserva.model.exception.EntityException;
 import com.senac.tcs.condominio.reserva.model.repository.CondomRepository;
-import com.senac.tcs.condominio.reserva.util.EntityException;
 
 @Service
 public class CondomService {  

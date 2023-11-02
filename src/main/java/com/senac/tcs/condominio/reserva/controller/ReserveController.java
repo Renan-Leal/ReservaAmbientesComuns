@@ -17,8 +17,9 @@ import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
 
 import com.senac.tcs.condominio.reserva.model.entities.Reserve;
+import com.senac.tcs.condominio.reserva.model.exception.EntityException;
+import com.senac.tcs.condominio.reserva.model.exception.ReserveException;
 import com.senac.tcs.condominio.reserva.model.service.ReserveService;
-import com.senac.tcs.condominio.reserva.util.EntityException;
 
 @RestController
 @RequestMapping("/reserve")
@@ -33,7 +34,7 @@ public class ReserveController {
     }
 
     @PostMapping("/register")
-    public Reserve register(@RequestBody Reserve reserve) {
+    public Reserve register(@RequestBody Reserve reserve) throws ReserveException {
         Reserve registeredReserve = service.register(reserve);
         return registeredReserve;
     }
@@ -58,7 +59,7 @@ public class ReserveController {
         Reserve currentReserve = service.findById(id);
         if (currentReserve.getId() != null) {
             reserve.setId(id);
-            currentReserve = service.register(reserve);
+            //currentReserve = service.register(reserve); TODO fazer uma sobrecarga do método ou criar um novo
         }
         return ResponseEntity.ok(currentReserve);
     }

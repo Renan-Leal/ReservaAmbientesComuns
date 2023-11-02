@@ -1,8 +1,8 @@
 package com.senac.tcs.condominio.reserva.controller;
 
 import com.senac.tcs.condominio.reserva.model.service.CommonAreaService;
-import com.senac.tcs.condominio.reserva.util.EntityException;
 import com.senac.tcs.condominio.reserva.model.entities.CommonArea;
+import com.senac.tcs.condominio.reserva.model.exception.EntityException;
 
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;

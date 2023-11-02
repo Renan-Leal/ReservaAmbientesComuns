@@ -16,8 +16,8 @@ import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
 
 import com.senac.tcs.condominio.reserva.model.entities.Condom;
+import com.senac.tcs.condominio.reserva.model.exception.EntityException;
 import com.senac.tcs.condominio.reserva.model.service.CondomService;
-import com.senac.tcs.condominio.reserva.util.EntityException;
 
 @RestController
 @RequestMapping("/condom")
