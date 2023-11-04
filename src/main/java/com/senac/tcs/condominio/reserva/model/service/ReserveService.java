@@ -41,11 +41,11 @@ public class ReserveService {
         repository.deleteById(id);
     }
 
-    public boolean validateReserveDate(LocalDate date){
+    private boolean validateReserveDate(LocalDate date){
         String sql = "SELECT e FROM e.dtreserve = :date";
         TypedQuery<Reserve> query = entityManager.createQuery(sql, Reserve.class);
         query.setParameter("date", date);
         List<Reserve> results = query.getResultList();
-        return results.isEmpty();
+        return !results.isEmpty();
     }
 }
