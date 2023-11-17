@@ -15,6 +15,7 @@ import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
 
+import com.senac.tcs.condominio.reserva.model.dto.CondomDTO;
 import com.senac.tcs.condominio.reserva.model.entities.Condom;
 import com.senac.tcs.condominio.reserva.model.exception.EntityException;
 import com.senac.tcs.condominio.reserva.model.service.CondomService;
@@ -32,9 +33,12 @@ public class CondomController {
     }
 
     @PostMapping("/register")
-    public Condom register(@RequestBody Condom condom) {
-        Condom registeredCondom = service.register(condom);
-        return registeredCondom;
+    public Condom register(@RequestBody CondomDTO condomDTO) {
+        if (condomDTO.name().isBlank() || condomDTO.birth() == null || condomDTO.cpf().isBlank()) {
+            throw new EntityException("All fields are mandatory");
+        }
+        Condom condom = new Condom(condomDTO.name(), condomDTO.birth(), condomDTO.cpf(), condomDTO.password());
+        return service.register(condom);
     }
 
     @DeleteMapping("/{id}")

@@ -1,6 +1,5 @@
 package com.senac.tcs.condominio.reserva.controller;
 
-import java.util.ArrayList;
 import java.util.List;
 
 import org.springframework.beans.factory.annotation.Autowired;
@@ -16,6 +15,7 @@ import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
 
+import com.senac.tcs.condominio.reserva.model.dto.ReserveDTO;
 import com.senac.tcs.condominio.reserva.model.entities.Reserve;
 import com.senac.tcs.condominio.reserva.model.exception.EntityException;
 import com.senac.tcs.condominio.reserva.model.exception.ReserveException;
@@ -34,9 +34,12 @@ public class ReserveController {
     }
 
     @PostMapping("/register")
-    public Reserve register(@RequestBody Reserve reserve) throws ReserveException {
-        Reserve registeredReserve = service.register(reserve);
-        return registeredReserve;
+    public Reserve register(@RequestBody ReserveDTO reserveDTO) throws ReserveException {
+        if (reserveDTO.dtReserve() == null || reserveDTO.condom() == null || reserveDTO.commonArea() == null) {
+            throw new EntityException("All fields are mandatory");
+        }
+        Reserve reserve = new Reserve(reserveDTO.dtReserve(), reserveDTO.condom(), reserveDTO.commonArea());
+        return service.register(reserve);
     }
 
     @DeleteMapping("/{id}")
@@ -55,11 +58,11 @@ public class ReserveController {
     }
 
     @PutMapping("/{id}")
-    public ResponseEntity<?> update(@PathVariable Long id, @RequestBody Reserve reserve) {
+    public ResponseEntity<?> update(@PathVariable Long id, @RequestBody Reserve reserve) throws ReserveException {
         Reserve currentReserve = service.findById(id);
         if (currentReserve.getId() != null) {
             reserve.setId(id);
-            //currentReserve = service.register(reserve); TODO fazer uma sobrecarga do método ou criar um novo
+            currentReserve = service.register(reserve);
         }
         return ResponseEntity.ok(currentReserve);
     }

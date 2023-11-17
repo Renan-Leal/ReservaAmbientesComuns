@@ -1,12 +1,12 @@
 package com.senac.tcs.condominio.reserva.controller;
 
 import com.senac.tcs.condominio.reserva.model.service.CommonAreaService;
+import com.senac.tcs.condominio.reserva.model.dto.CommonAreaDTO;
 import com.senac.tcs.condominio.reserva.model.entities.CommonArea;
 import com.senac.tcs.condominio.reserva.model.exception.EntityException;
 
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
-import org.springframework.http.HttpStatusCode;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.DeleteMapping;
 import org.springframework.web.bind.annotation.ExceptionHandler;
@@ -19,8 +19,6 @@ import org.springframework.web.bind.annotation.PutMapping;
 import org.springframework.web.bind.annotation.RequestBody;
 
 import java.util.List;
-
-import javax.swing.text.html.parser.Entity;
 
 @RestController
 @RequestMapping("/commonArea")
@@ -35,9 +33,12 @@ public class CommonAreaController {
     }
 
     @PostMapping("/register")
-    public CommonArea register(@RequestBody CommonArea commonArea) {
-        CommonArea registeredCommonArea = service.register(commonArea);
-        return registeredCommonArea;
+    public CommonArea register(@RequestBody CommonAreaDTO commonAreaDTO) throws EntityException {
+        if (commonAreaDTO.name().isBlank() || commonAreaDTO.description().isBlank()){
+            throw new EntityException("All fields are mandatory");
+        }
+        CommonArea commonArea = new CommonArea(commonAreaDTO.name(), commonAreaDTO.description());
+        return service.register(commonArea);
     }
 
     @DeleteMapping("/{id}")
