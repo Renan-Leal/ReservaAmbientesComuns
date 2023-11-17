@@ -28,10 +28,13 @@ public class Condom {
     private LocalDate birth;
     @Column(nullable = false, length = 11, unique = true)
     private String cpf;
+    @Column(nullable = false)
+    private String password;
     
-    public Condom(String name, LocalDate birth, String cpf) {
+    public Condom(String name, LocalDate birth, String cpf, String password) {
         this.name = name;
         this.birth = birth;
         this.cpf = cpf;
+        this.password = password;
     }
 }
