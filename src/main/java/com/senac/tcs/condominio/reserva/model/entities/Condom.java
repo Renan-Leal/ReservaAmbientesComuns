@@ -37,4 +37,9 @@ public class Condom {
         this.cpf = cpf;
         this.password = password;
     }
+
+    public Condom (String name, String password) {
+        this.name = name;
+        this.password = password;
+    }
 }
