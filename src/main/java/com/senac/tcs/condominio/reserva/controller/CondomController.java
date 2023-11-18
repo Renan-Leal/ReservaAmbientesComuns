@@ -19,6 +19,9 @@ import com.senac.tcs.condominio.reserva.model.dto.CondomDTO;
 import com.senac.tcs.condominio.reserva.model.entities.Condom;
 import com.senac.tcs.condominio.reserva.model.exception.EntityException;
 import com.senac.tcs.condominio.reserva.model.service.CondomService;
+import com.senac.tcs.condominio.reserva.model.service.TokenService;
+
+import ch.qos.logback.core.subst.Token;
 
 @RestController
 @RequestMapping("/condom")
@@ -26,7 +29,18 @@ public class CondomController {
 
     @Autowired
     private CondomService service;
+
+    @Autowired
+    TokenService tokenService;
     
+    @PostMapping("/login")
+    public ResponseEntity<?> login(@RequestBody CondomDTO condomDTO) {
+        Condom condom = new Condom(condomDTO.name(), condomDTO.password());
+        var authenticate = this.authenticationManager.authenticate(condom.getPassword());
+        Token token = tokenService.generatetoken((Condom) authenticate.getPrincipal());
+        return ResponseEntity.ok(token);
+    }
+
     @GetMapping("/listAll")
     public List<Condom> listAll() {
         return service.listAll();
