@@ -16,16 +16,18 @@ import com.senac.tcs.condominio.reserva.model.exception.EntityException;
 @Service
 public class TokenService {
     
-    private String secret = "";
+    // teste para SHA256
+    private String secret = "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855";
 
     public String generatetoken(Condom condom) {
         try {
             Algorithm algorithm = Algorithm.HMAC256(secret);
-            return JWT.create()
+            String token = JWT.create()
             .withIssuer("CondomAreaSystem")
             .withSubject(condom.getName())
             .withExpiresAt(getTempExpires())
             .sign(algorithm);
+            return token;
         } catch (JWTCreationException e) {
             throw new EntityException("Failure to generate token");
         }

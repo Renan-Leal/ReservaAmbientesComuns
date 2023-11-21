@@ -25,8 +25,6 @@ public class CondomService {
         if(ValidateCpf.validarCpf(condom.getCpf())) {
             throw new EntityException("Invalid CPF");
         }
-        String hashedPassword = new BCryptPasswordEncoder().encode(condom.getPassword());
-        condom.setPassword(hashedPassword);
         return repository.save(condom);
     }
 

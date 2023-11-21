@@ -2,6 +2,8 @@ package com.senac.tcs.condominio.reserva.model.dto;
 
 import java.time.LocalDate;
 
-public record CondomDTO(String name, LocalDate birth, String cpf, String password) {
+import com.senac.tcs.condominio.reserva.model.entities.UserRole;
+
+public record CondomDTO(String name, LocalDate birth, String cpf, String password, UserRole userRole) {
     
 }

@@ -32,7 +32,7 @@ public class SecurityFilter extends OncePerRequestFilter{
         var token = this.recoverToken(request);
         if (token != null) {
             String condomName = tokenService.validateToken(token);
-            UserDetails user = condomRepository.findbyName(condomName);
+            UserDetails user = condomRepository.findByName(condomName);
             var autorizathion = new UsernamePasswordAuthenticationToken(null, user.getAuthorities());
             SecurityContextHolder.getContext().setAuthentication(autorizathion);
         }

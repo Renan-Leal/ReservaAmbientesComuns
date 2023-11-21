@@ -2,9 +2,14 @@ package com.senac.tcs.condominio.reserva.controller;
 
 import java.util.List;
 
+import org.apache.catalina.connector.Response;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
+import org.springframework.security.authentication.UsernamePasswordAuthenticationToken;
+import org.springframework.security.core.AuthenticationException;
+import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
+import org.springframework.security.authentication.AuthenticationManager;
 import org.springframework.web.bind.annotation.DeleteMapping;
 import org.springframework.web.bind.annotation.ExceptionHandler;
 import org.springframework.web.bind.annotation.GetMapping;
@@ -33,12 +38,20 @@ public class CondomController {
     @Autowired
     TokenService tokenService;
     
+    @Autowired
+    AuthenticationManager authenticationManager;
+    
     @PostMapping("/login")
-    public ResponseEntity<?> login(@RequestBody CondomDTO condomDTO) {
-        Condom condom = new Condom(condomDTO.name(), condomDTO.password());
-        var authenticate = this.authenticationManager.authenticate(condom.getPassword());
-        Token token = tokenService.generatetoken((Condom) authenticate.getPrincipal());
-        return ResponseEntity.ok(token);
+    public ResponseEntity<?> login(@RequestBody Condom condom) {
+        try {
+            var condomPassword = new UsernamePasswordAuthenticationToken(condom.getName(), condom.getPassword());
+            // Condom condom = new Condom(condomDTO.name(), condomDTO.password());
+            var authenticate = this.authenticationManager.authenticate(condomPassword);
+            var token = tokenService.generatetoken((Condom) authenticate.getPrincipal());
+            return ResponseEntity.ok(token);
+        } catch (AuthenticationException e) {
+            return ResponseEntity.status(HttpStatus.UNAUTHORIZED).body("Credenciais inválidas " + e.getMessage());
+        }
     }
 
     @GetMapping("/listAll")
@@ -47,12 +60,14 @@ public class CondomController {
     }
 
     @PostMapping("/register")
-    public Condom register(@RequestBody CondomDTO condomDTO) {
-        if (condomDTO.name().isBlank() || condomDTO.birth() == null || condomDTO.cpf().isBlank()) {
-            throw new EntityException("All fields are mandatory");
-        }
-        Condom condom = new Condom(condomDTO.name(), condomDTO.birth(), condomDTO.cpf(), condomDTO.password());
-        return service.register(condom);
+    public ResponseEntity<?> register(@RequestBody CondomDTO condomDTO) {
+        // if (condomDTO.name().isBlank() || condomDTO.birth() == null || condomDTO.cpf().isBlank()) {
+        //     throw new EntityException("All fields are mandatory");
+        // }
+        String encryptedPassword = new BCryptPasswordEncoder().encode(condomDTO.password());
+        Condom condom = new Condom(condomDTO.name(), condomDTO.birth(), condomDTO.cpf(), encryptedPassword, condomDTO.userRole());
+        service.register(condom);
+        return ResponseEntity.ok().build();
     }
 
     @DeleteMapping("/{id}")
